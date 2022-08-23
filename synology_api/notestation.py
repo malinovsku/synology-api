@@ -3,8 +3,8 @@ from . import base_api_core
 
 class NoteStation(base_api_core.Core):
     def __init__(self, ip_address, port, username, password, secure=False, cert_verify=False, dsm_version=7,
-                 debug=True, otp_code=None):
-        super(NoteStation, self).__init__(ip_address, port, username, password, secure, cert_verify, dsm_version, debug, otp_code)
+                 debug=True, otp_code=None, timeout=10):
+        super(NoteStation, self).__init__(ip_address, port, username, password, secure, cert_verify, dsm_version, debug, otp_code, timeout)
 
     def settings_info(self):
         api_name = 'SYNO.NoteStation.Setting'

@@ -3,11 +3,12 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 
 class Authentication:
-    def __init__(self, ip_address, port, username, password, secure=False, cert_verify=False, dsm_version=7, debug=True, otp_code=None):
+    def __init__(self, ip_address, port, username, password, secure=False, cert_verify=False, dsm_version=7, debug=True, otp_code=None, timeout=10):
         self._ip_address = ip_address
         self._port = port
         self._username = username
         self._password = password
+        self._timeout = timeout
         self._sid = None
         self._session_expire = True
         self._verify = cert_verify
@@ -38,7 +39,7 @@ class Authentication:
                 if self._debug is True:
                     return 'User already logged'
         else:
-            session_request = requests.get(self._base_url + login_api, param, verify=self._verify)
+            session_request = requests.get(self._base_url + login_api, param, verify=self._verify, timeout=self._timeout)
             self._sid = session_request.json()['data']['sid']
             self._session_expire = False
             if self._debug is True:
@@ -48,7 +49,7 @@ class Authentication:
         logout_api = 'auth.cgi?api=SYNO.API.Auth'
         param = {'version': '2', 'method': 'logout', 'session': application}
 
-        response = requests.get(self._base_url + logout_api, param, verify=self._verify)
+        response = requests.get(self._base_url + logout_api, param, verify=self._verify, timeout=self._timeout)
         if response.json()['success'] is True:
             self._session_expire = True
             self._sid = None
@@ -64,7 +65,7 @@ class Authentication:
         query_path = 'query.cgi?api=SYNO.API.Info'
         list_query = {'version': '1', 'method': 'query', 'query': 'all'}
 
-        response = requests.get(self._base_url + query_path, list_query, verify=self._verify).json()
+        response = requests.get(self._base_url + query_path, list_query, verify=self._verify, timeout=self._timeout).json()
 
         if app is not None:
             for key in response['data']:
@@ -116,7 +117,7 @@ class Authentication:
 
         if method == 'get':
             url = ('%s%s' % (self._base_url, api_path)) + '?api=' + api_name
-            response = requests.get(url, req_param, verify=self._verify)
+            response = requests.get(url, req_param, verify=self._verify, timeout=self._timeout)
 
             if response_json is True:
                 return response.json()
@@ -125,7 +126,7 @@ class Authentication:
 
         elif method == 'post':
             url = ('%s%s' % (self._base_url, api_path)) + '?api=' + api_name
-            response = requests.post(url, req_param, verify=self._verify)
+            response = requests.post(url, req_param, verify=self._verify, timeout=self._timeout)
 
             if response_json is True:
                 return response.json()

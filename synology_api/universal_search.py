@@ -2,8 +2,8 @@ from synology_api import auth
 from urllib import parse
 
 class UniversalSearch:
-	def __init__(self, ip_address, port, username, password, secure=False, cert_verify=False, dsm_version=7, debug=True, otp_code=None):
-		self.session = auth.Authentication(ip_address, port, username, password, secure, cert_verify, dsm_version, debug, otp_code)
+	def __init__(self, ip_address, port, username, password, secure=False, cert_verify=False, dsm_version=7, debug=True, otp_code=None, timeout=10):
+		self.session = auth.Authentication(ip_address, port, username, password, secure, cert_verify, dsm_version, debug, otp_code, timeout)
 		self.session.login('Finder')
 		self.session.get_api_list('Finder')
 		self.request_data = self.session.request_data

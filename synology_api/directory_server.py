@@ -32,9 +32,9 @@ class DirectoryServer(base_api_core.Core):
     - Perform an entry request to complete a Deletion
     """
 
-    def __init__(self, ip_address, port, username, password, secure=False, cert_verify=False, dsm_version=7, debug=True, otp_code=None):
+    def __init__(self, ip_address, port, username, password, secure=False, cert_verify=False, dsm_version=7, debug=True, otp_code=None, timeout=10):
         super(DirectoryServer, self).__init__(ip_address, port,
-                                              username, password, secure, cert_verify, dsm_version, debug, otp_code)
+                                              username, password, secure, cert_verify, dsm_version, debug, otp_code, timeout)
 
     def get_directory_info(self):
         """"
